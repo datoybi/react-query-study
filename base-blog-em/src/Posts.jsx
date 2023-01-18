@@ -16,7 +16,9 @@ export function Posts() {
 
   // replace with useQuery
   // const data = [];
-  const { data, isError, error, isLoading } = useQuery("posts", fetchPosts); // 쿼리의 이름 (여기서는 posts)
+  const { data, isError, error, isLoading } = useQuery("posts", fetchPosts, {
+    staleTime: 2000,
+  }); // 쿼리의 이름 (여기서는 posts) , staleTime 2초
   if (isLoading) return <h3>Loading...</h3>;
   if (isError)
     return (
