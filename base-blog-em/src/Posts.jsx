@@ -16,8 +16,15 @@ export function Posts() {
 
   // replace with useQuery
   // const data = [];
-  const { data } = useQuery("posts", fetchPosts); // 쿼리의 이름 (여기서는 posts)
-  if (!data) return <div />;
+  const { data, isError, error, isLoading } = useQuery("posts", fetchPosts); // 쿼리의 이름 (여기서는 posts)
+  if (isLoading) return <h3>Loading...</h3>;
+  if (isError)
+    return (
+      <>
+        <h3>Ooops, something went</h3>
+        <p>{error.toString()}</p>
+      </>
+    );
 
   return (
     <>
