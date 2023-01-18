@@ -8,6 +8,5 @@ const fetchUrl = async (url) => {
 };
 
 export function InfiniteSpecies() {
-  // TODO: get data for InfiniteScroll via React Query
   return <InfiniteScroll />;
 }
