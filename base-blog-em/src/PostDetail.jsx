@@ -15,10 +15,11 @@ async function deletePost(postId) {
   return response.json();
 }
 
-async function updatePost(postId) {
+async function updatePost(postId, title) {
+  console.log(postId, title);
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/postId/${postId}`,
-    { method: "PATCH", data: { title: "REACT QUERY FOREVER!!!!" } }
+    { method: "PATCH", data: { title } }
   );
   return response.json();
 }
@@ -33,6 +34,7 @@ export function PostDetail({ post }) {
   );
 
   const deleteMutation = useMutation((postId) => deletePost(postId));
+  const updateMutation = useMutation(({ id, title }) => updatePost(id, title));
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -43,6 +45,12 @@ export function PostDetail({ post }) {
         <p>${error.toString()}</p>
       </>
     );
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const { value: title } = e.target.elements["newTitle"];
+    updateMutation.mutate({ id: post.id, title });
+  };
 
   return (
     <>
@@ -57,7 +65,19 @@ export function PostDetail({ post }) {
       {deleteMutation.isSuccess && (
         <p style={{ color: "green" }}>Post has (not) been deleted</p>
       )}
-      <button>Update title</button>
+      <form onSubmit={handleUpdate}>
+        <input type="text" name="newTitle"></input>
+        <button type="submit">Update title</button>
+      </form>
+      {updateMutation.isError && (
+        <p style={{ color: "red" }}>Error Updating the post's title</p>
+      )}
+      {updateMutation.isLoading && (
+        <p style={{ color: "purple" }}>Updating the post's title</p>
+      )}
+      {updateMutation.isSuccess && (
+        <p style={{ color: "green" }}> Post title has (not) been updated</p>
+      )}
       <p>{post.body}</p>
       <h4>Comments</h4>
       {data.map((comment) => (
