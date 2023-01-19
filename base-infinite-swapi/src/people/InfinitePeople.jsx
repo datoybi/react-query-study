@@ -26,8 +26,6 @@ export function InfinitePeople() {
   if (isLoading) return <div className="loading">Loading...</div>;
   if (isError) return <div>Error! {error.toString()}</div>;
 
-  console.log(data);
-
   return (
     <>
       {isFetching && <div className="loading">Loading...</div>}
