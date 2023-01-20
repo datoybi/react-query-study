@@ -21,6 +21,7 @@ export function getUpdatedMonthYear(
 
 // get calendar-relevant data for the month containing initialDate
 export function getMonthYearDetails(initialDate: dayjs.Dayjs): MonthYear {
+  // 현재 날짜로 initialDate가 설정 되나???
   const month = initialDate.format('MM');
   const year = initialDate.format('YYYY');
   const startDate = dayjs(`${year}${month}01`);
