@@ -50,7 +50,6 @@ export function useAppointments(): UseAppointments {
   // get the monthYear for the current date (for default monthYear state)
   // 현재 날짜에서 년, 월을 얻는다 (default 년월 상태)
   const currentMonthYear = getMonthYearDetails(dayjs());
-  console.log(currentMonthYear);
 
   // state to track current monthYear chosen by user
   // state value is returned in hook return object
@@ -97,7 +96,7 @@ export function useAppointments(): UseAppointments {
   const fallback = {};
 
   const { data: appointments = fallback } = useQuery(
-    queryKeys.appointments,
+    [queryKeys.appointments, monthYear.year, monthYear.month],
     () => getAppointments(monthYear.year, monthYear.month),
   );
 
