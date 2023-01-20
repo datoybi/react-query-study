@@ -51,6 +51,12 @@ interface UseAppointments {
 //	3. filter의 상태를 추적한다. (모든 예약들 / 가능한 예약 날짜)
 //		3a. 현재 년 월의 해당되는 일정들을 반환한다.
 
+// common options for both useQuery and prefetchQuery
+const commonOptions = {
+  staleTime: 0,
+  cacheTime: 500000, // 5 minutes
+};
+
 export function useAppointments(): UseAppointments {
   const currentMonthYear = getMonthYearDetails(dayjs());
   const [monthYear, setMonthYear] = useState(currentMonthYear);
@@ -74,6 +80,7 @@ export function useAppointments(): UseAppointments {
     queryClient.prefetchQuery(
       [queryKeys.appointments, nextMonthYear.year, nextMonthYear.month],
       () => getAppointments(nextMonthYear.year, nextMonthYear.month),
+      commonOptions,
     );
   }, [monthYear, queryClient]);
 
@@ -84,6 +91,10 @@ export function useAppointments(): UseAppointments {
     () => getAppointments(monthYear.year, monthYear.month),
     {
       select: showAll ? undefined : selectFn,
+      ...commonOptions,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
     },
   );
 
