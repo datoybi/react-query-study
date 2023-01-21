@@ -25,6 +25,5 @@ export function useUserAppointments(): Appointment[] {
     () => getUserAppointments(user),
     { enabled: !!user },
   );
-  console.log(userAppointments);
   return userAppointments;
 }
