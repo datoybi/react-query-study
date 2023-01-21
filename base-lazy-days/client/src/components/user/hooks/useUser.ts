@@ -29,7 +29,15 @@ interface UseUser {
 
 export function useUser(): UseUser {
   const queryClient = useQueryClient();
-  const { data: user } = useQuery(queryKeys.user, () => getUser(user));
+  const { data: user } = useQuery(queryKeys.user, () => getUser(user), {
+    onSuccess: (received: User | null) => {
+      if (!received) {
+        clearStoredUser();
+      } else {
+        setStoredUser(received);
+      }
+    },
+  });
 
   // meant to be called from useAuth
   // useQuery 다음에 토큰 처리 및 값이 맞는지 처리 해두고 (signin),
